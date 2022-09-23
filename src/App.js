@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import './stamp.css';
 import './App.css';
+import allCard from './components/DataCard';
+import Toolbar from './components/Toolbar';
+import ProjectList from './components/ProjectList';
+const filters = ["All", "Websites", "Flayers", "Business Cards"];
 
 function App() {
+  const [state, setState] = useState({chosen: 'All'});
+  const choiceState = (evn) => {
+    setState({chosen: evn});
+  }
+  function selectData() {
+    return (state.chosen === 'All' ? allCard : allCard.filter((item) => item.category === state.chosen)); 
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Toolbar
+      all = {filters}
+      chosen = {state.chosen}
+      onSelectFilter={(evn) => choiceState(evn)}/> 
+      <ProjectList data={selectData()}/>
     </div>
   );
 }
